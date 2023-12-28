@@ -28,7 +28,7 @@ const routes: Routes = [
   },
 ];
 
-/* si este es nuestro sistema de rutas principal o si es el primer sistema de routing de la aplicación que estamos haciendo entonces colocaremos .forRoot(nuestras_rutas). Si es otros sistema de routing entonces se colocaría .forChild() */
+/* si este es nuestro sistema de rutas principal o si es el primer sistema de routing de la aplicación que estamos haciendo entonces colocaremos .forRoot(nuestras_rutas). Si es otros sistema de routing entonces se colocaría .forChild(). El .forRoot() solo hay uno en toda la aplicación del cual se desprenden los demás routers. Cualquier otro router será .forChild() que habilita las rutas hijas, que prácticamente las rutas creadas después de las rutas principales serán rutas hijas */
 /* se exporta RouterModule ya que es la configuración que estamos haciendo y esto tendría que ser utilizado en el módulo principal de mi aplicación */
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
