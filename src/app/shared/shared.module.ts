@@ -6,10 +6,21 @@ import { AppRoutingModule } from '../app-routing.module';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { AboutPageComponent } from './pages/about-page/about-page.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ContactPageComponent } from './pages/contact-page/contact-page.component';
 
 @NgModule({
-  declarations: [HomePageComponent, AboutPageComponent, SidebarComponent],
-  exports: [HomePageComponent, AboutPageComponent, SidebarComponent],
+  declarations: [
+    HomePageComponent,
+    AboutPageComponent,
+    SidebarComponent,
+    ContactPageComponent,
+  ],
+  exports: [
+    HomePageComponent,
+    AboutPageComponent,
+    SidebarComponent,
+    ContactPageComponent,
+  ],
   imports: [CommonModule, AppRoutingModule],
 })
 export class SharedModule {}

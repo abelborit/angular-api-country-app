@@ -5,10 +5,33 @@
   <!-- para hacer la navegación y hacer que este li sea un link de navegación que reconozca el router que hemos implementado entonces hay que colocarle el atributo routerLink="path_a_usar" pero veremos que aún no cambia de ruta cuando se presiona o se hace click y si se le coloca como propiedad, es decir, [routerLink]="'path_a_usar'" y con eso le estamos dando el control a Angular sobre el componente ya que le decimos que establezca dinámicamente el routerLink al valor del string 'path_a_usar' que por ejemplo sería 'home' y si no existe nos dará un error "Can't bind to 'routerLink' since it isn't a known property of 'li'." que nos dice que el li no puede reconocer la propiedad routerLink y para solucionarlo entonces tenemos que hacer que nuestros li en este sidebar.component.html conozcan el routerLink y eso se hace importando en el shared.module.ts en los imports el AppRoutingModule para que todo este módulo de shared.module.ts puede utilizar lo del AppRoutingModule -->
   <!-- no sería necesario hacerlo con [routerLink]="'home'" porque igual a lo que se iguala es un string -->
   <!-- <li [routerLink]="'home'" class="list-group-item">Home Page</li> -->
-  <li routerLink="home" routerLinkActive="active" class="list-group-item">
+
+  <!-- como se está colocando routerLink="" a la página inicial o principal y también routerLinkActive="active" a los li entonces al cambiar de página a cualquier otra ruta como about entonces los li de '' y 'about' se pintarán como activo ya que al tener el routerLink="" también influye en routerLink="about" pero para eso hay opciones para configurar como por ejemplo el exact en true para tener la ruta exacta -->
+  <li
+    routerLink=""
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
     Home Page
   </li>
-  <li routerLink="about" routerLinkActive="active" class="list-group-item">
+
+  <li
+    routerLink="about"
+    routerLinkActive="active"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
     About Page
+  </li>
+
+  <li
+    routerLink="contact"
+    routerLinkActive="active"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
+    Contact Page
   </li>
 </ul>

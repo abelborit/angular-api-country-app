@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomePageComponent } from './shared/pages/home-page/home-page.component';
 import { AboutPageComponent } from './shared/pages/about-page/about-page.component';
+import { ContactPageComponent } from './shared/pages/contact-page/contact-page.component';
 
 /* con todo esto ya tengo un módulo independiente especializado en la navegación de la aplicación */
 const routes: Routes = [
+  /* en vez de los string vacíos en '' que significan que ya están en el path inicial, se podría colocar también 'home' o 'principal' o algo que haga referencia a la página inicial pero por conveniencia se colocará '' */
+  /* en estas rutas también pueden tener subrutas y componentes hijos, y sería utilizar children: [{ path: 'childrenPath', component: childrenComponente }], */
   {
-    path: 'home',
+    path: '',
     component: HomePageComponent,
   },
   {
@@ -15,8 +18,13 @@ const routes: Routes = [
     component: AboutPageComponent,
   },
   {
+    path: 'contact',
+    component: ContactPageComponent,
+  },
+  /* en las rutas de Angular el framework verifica secuencialmente cuál coincide con la ruta actual que se está solicitando. Al colocar el comodín de cualquier ruta antes de la ruta solicitada, Angular accederá a esa ruta comodín en lugar de la ruta solicitada. Por eso se coloca la ruta comodín al final para evitar este tipo de problemas. */
+  {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '',
   },
 ];
 
