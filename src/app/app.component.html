@@ -1,12 +1,10 @@
 <div class="row mt-4">
-  <div class="col-3">
-    <!-- Sidebar -->
-    Sidebar
-  </div>
+  <!-- Sidebar -->
+  <div class="col-3">Sidebar</div>
 
+  <!-- Pages -->
   <div class="col">
-    <!-- Pages -->
-    <app-shared-pages-home-page></app-shared-pages-home-page>
-    <app-shared-pages-about-page></app-shared-pages-about-page>
+    <!-- este <router-outlet></router-outlet> es un componente especializado de Angular que le dice a la aplicación que dependiendo de la ruta en la que estés muestres o renderices su componente determinado y ya no es necesario colocar los componentes de las páginas de forma directa -->
+    <router-outlet></router-outlet>
   </div>
 </div>
