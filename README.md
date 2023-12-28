@@ -1,3 +1,41 @@
+# Angular & TypeScript - Angular Api Country App
+
+---
+
+# Temas puntuales de la sección
+
+### ¿Qué veremos en esta sección?
+
+En esta sección veremos los fundamentos de una aplicación SPA (Single Page Application), y luego, las seguiremos haciendo pero mediante carga perezosa (lazyload). Estaremos viendo:
+
+- Rutas
+- RouterLink y RouterLinkActive
+- Componentes especializados
+- DebounceTime
+- Inputs
+- SwitchMaps
+- Consumo de APIs
+- Tipado de datos
+- Menú de aplicación
+
+### \* PASOS A REALIZAR:
+
+1. ejemplo
+2. ejemplo
+3. ejemplo
+
+### \* RECURSOS A USAR:
+
+- Bootstrap (CDN): https://getbootstrap.com/
+  ```html
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  ```
+- ejemplo
+- ejemplo
+
+---
+
 # AngularApiCountryApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
