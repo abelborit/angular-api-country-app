@@ -9,18 +9,18 @@ import { ContactPageComponent } from './shared/pages/contact-page/contact-page.c
 const routes: Routes = [
   /* en vez de los string vacíos en '' que significan que ya están en el path inicial, se podría colocar también 'home' o 'principal' o algo que haga referencia a la página inicial pero por conveniencia se colocará '' */
   /* en estas rutas también pueden tener subrutas y componentes hijos, y sería utilizar children: [{ path: 'childrenPath', component: childrenComponente }], */
-  {
-    path: '',
-    component: HomePageComponent,
-  },
-  {
-    path: 'about',
-    component: AboutPageComponent,
-  },
-  {
-    path: 'contact',
-    component: ContactPageComponent,
-  },
+  // {
+  //   path: '',
+  //   component: HomePageComponent,
+  // },
+  // {
+  //   path: 'about',
+  //   component: AboutPageComponent,
+  // },
+  // {
+  //   path: 'contact',
+  //   component: ContactPageComponent,
+  // },
   {
     /* aplicar lazyload */
     /* el path en este caso sería la ruta base para empezar a cargar el módulo y su rutas de forma lazy, es decir, "..../countries/by-capital" -- "..../countries/by-region" -- etc.... */
@@ -34,7 +34,8 @@ const routes: Routes = [
   /* en las rutas de Angular el framework verifica secuencialmente cuál coincide con la ruta actual que se está solicitando. Al colocar el comodín de cualquier ruta antes de la ruta solicitada, Angular accederá a esa ruta comodín en lugar de la ruta solicitada. Por eso se coloca la ruta comodín al final para evitar este tipo de problemas. */
   {
     path: '**',
-    redirectTo: '',
+    // redirectTo: '',
+    redirectTo: 'countries',
   },
 ];
 
