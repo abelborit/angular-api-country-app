@@ -1,0 +1,8 @@
+<!-- se utilizará la referencia local para hacer referencia a este elemento y también se usará el @ViewChild en search-box.component.ts ya que en este caso no se usará el FormsModule porque este es un componente pequeño -->
+<input
+  type="text"
+  [placeholder]="placeholderProp"
+  class="form-control"
+  (keyup.enter)="handleSearchValue()"
+  #searchInput
+/>
