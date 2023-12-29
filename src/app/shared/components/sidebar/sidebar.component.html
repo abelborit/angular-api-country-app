@@ -1,5 +1,4 @@
-<h2>Countries</h2>
-<hr />
+<h3 class="mb-2">Pages</h3>
 
 <ul class="list-group">
   <!-- para hacer la navegación y hacer que este li sea un link de navegación que reconozca el router que hemos implementado entonces hay que colocarle el atributo routerLink="path_a_usar" pero veremos que aún no cambia de ruta cuando se presiona o se hace click y si se le coloca como propiedad, es decir, [routerLink]="'path_a_usar'" y con eso le estamos dando el control a Angular sobre el componente ya que le decimos que establezca dinámicamente el routerLink al valor del string 'path_a_usar' que por ejemplo sería 'home' y si no existe nos dará un error "Can't bind to 'routerLink' since it isn't a known property of 'li'." que nos dice que el li no puede reconocer la propiedad routerLink y para solucionarlo entonces tenemos que hacer que nuestros li en este sidebar.component.html conozcan el routerLink y eso se hace importando en el shared.module.ts en los imports el AppRoutingModule para que todo este módulo de shared.module.ts puede utilizar lo del AppRoutingModule -->
@@ -33,5 +32,37 @@
     style="cursor: pointer"
   >
     Contact Page
+  </li>
+</ul>
+
+<hr style="margin: 30px auto 20px auto" />
+<h3 class="mb-2">Countries</h3>
+
+<ul class="list-group">
+  <li
+    routerLink="countries/by-capital"
+    routerLinkActive="active"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
+    By Capital
+  </li>
+
+  <li
+    routerLink="countries/by-country"
+    routerLinkActive="active"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
+    By Country
+  </li>
+
+  <li
+    routerLink="countries/by-region"
+    routerLinkActive="active"
+    class="list-group-item"
+    style="cursor: pointer"
+  >
+    By Region
   </li>
 </ul>

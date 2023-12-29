@@ -21,6 +21,16 @@ const routes: Routes = [
     path: 'contact',
     component: ContactPageComponent,
   },
+  {
+    /* aplicar lazyload */
+    /* el path en este caso sería la ruta base para empezar a cargar el módulo y su rutas de forma lazy, es decir, "..../countries/by-capital" -- "..../countries/by-region" -- etc.... */
+    /* el import() recibe el path del módulo que queremos importar pero de manera estática que sería en este caso el módulo principal countries.module.ts o countries.module y este módulo ya tiene en su imports al CountriesRoutingModule. Este import() es una promesa entonces hay que colocar el .then() para resolverla y obtener el módulo que me interesa que en este caso sería CountriesModule */
+    path: 'countries',
+    loadChildren: () =>
+      import('./countries/countries.module').then(
+        (module) => module.CountriesModule
+      ),
+  },
   /* en las rutas de Angular el framework verifica secuencialmente cuál coincide con la ruta actual que se está solicitando. Al colocar el comodín de cualquier ruta antes de la ruta solicitada, Angular accederá a esa ruta comodín en lugar de la ruta solicitada. Por eso se coloca la ruta comodín al final para evitar este tipo de problemas. */
   {
     path: '**',
