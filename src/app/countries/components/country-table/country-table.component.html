@@ -1,5 +1,7 @@
 <div *ngIf="countriesList.length === 0; else countryTable">
-  <p class="alert alert-warning text-center">No search yet...</p>
+  <p class="alert alert-warning text-center">
+    No search yet or there aren't data. Please search again...
+  </p>
 </div>
 
 <ng-template #countryTable>
@@ -26,7 +28,7 @@
         <td>{{ country.name.common }}</td>
         <td>{{ country.capital }}</td>
         <td>{{ country.population | number }}</td>
-        <td><a href="#">More...</a></td>
+        <td><a href="#">View more...</a></td>
       </tr>
     </tbody>
   </table>

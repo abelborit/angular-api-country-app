@@ -1,11 +1,16 @@
 <h2>
   <strong>By Capital: </strong>
   <!-- condicional if else con pipe de titlecase-->
-  <small
-    *ngIf="capitalSearchedValue; else noValueTemplate"
-    class="text-success"
-    >{{ capitalSearchedValue | titlecase }}</small
-  >
+  <small *ngIf="capitalSearchedValue; else noValueTemplate" class="text-success"
+    >{{ capitalSearchedValue | titlecase }}
+
+    <small
+      *ngIf="capitalSearchedValue && countriesData.length === 0"
+      class="text-danger"
+    >
+      (not found)
+    </small>
+  </small>
 
   <ng-template #noValueTemplate>
     <small class="text-danger">No search yet</small>
