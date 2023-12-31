@@ -27,6 +27,26 @@ export class CountriesService {
       })
     );
   }
+
+  handleSearchCountry_Service(
+    searchValue: string
+  ): Observable<CountryInterface[]> {
+    const countryURL = `${this.serviceURL}/name/${searchValue}`;
+
+    return this.httpClient
+      .get<CountryInterface[]>(countryURL)
+      .pipe(catchError(() => of([])));
+  }
+
+  handleSearchRegion_Service(
+    searchValue: string
+  ): Observable<CountryInterface[]> {
+    const regionURL = `${this.serviceURL}/region/${searchValue}`;
+
+    return this.httpClient
+      .get<CountryInterface[]>(regionURL)
+      .pipe(catchError(() => of([])));
+  }
 }
 
 /* En RxJS, los operadores no modifican el Observable original, lo que hacen es devolver un nuevo Observable. Los operadores de RxJS son funciones puras que toman un Observable como entrada y generan otro Observable como salida. Al suscribirte al Observable de salida también te suscribes al Observable de entrada. Entonces, aunque los objetos en JavaScript se pasen por referencia, los operadores de RxJS están diseñados para no modificar el Observable original. Así que sí, aún tienes un Observable original después de aplicar un operador de RxJS. Si deseas leer más detalles, puedes consultar la documentación de RxJS que te comparto a continuación. */

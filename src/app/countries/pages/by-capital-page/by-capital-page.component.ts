@@ -22,7 +22,7 @@ export class ByCapitalPageComponent {
     this.countriesService
       .handleSearchCapital_Service(searchValue)
       .subscribe((response) => {
-        console.log(response);
+        // console.log(response);
         this.countriesData = response;
       });
   }
