@@ -1,4 +1,16 @@
-<h2>By Capital</h2>
+<h2>
+  <strong>By Capital: </strong>
+  <!-- condicional if else con pipe de titlecase-->
+  <small
+    *ngIf="capitalSearchedValue; else noValueTemplate"
+    class="text-success"
+    >{{ capitalSearchedValue | titlecase }}</small
+  >
+
+  <ng-template #noValueTemplate>
+    <small class="text-danger">No search yet</small>
+  </ng-template>
+</h2>
 <hr />
 
 <div class="row">
@@ -20,5 +32,10 @@
   <!-- Results Table -->
   <div class="col">
     <hr />
+    <ul>
+      <li *ngFor="let country of countriesData">
+        {{ country.capital }} - {{ country.population }}
+      </li>
+    </ul>
   </div>
 </div>

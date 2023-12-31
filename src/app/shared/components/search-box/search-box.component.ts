@@ -28,8 +28,8 @@ export class SearchBoxComponent {
     const searchValue = this.inputSearchRef.nativeElement.value.trim();
     if (!searchValue) return;
 
-    console.log('SearchBoxComponent - handleSearchValue');
-    console.log({ searchValue });
+    // console.log('SearchBoxComponent - handleSearchValue');
+    // console.log({ searchValue });
     this.handleSearchValueEmitter.emit(searchValue);
 
     this.inputSearchRef.nativeElement.value = '';
