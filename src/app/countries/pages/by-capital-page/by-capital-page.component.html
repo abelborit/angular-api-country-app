@@ -32,10 +32,8 @@
   <!-- Results Table -->
   <div class="col">
     <hr />
-    <ul>
-      <li *ngFor="let country of countriesData">
-        {{ country.capital }} - {{ country.population }}
-      </li>
-    </ul>
+    <app-countries-component-country-table
+      [countriesList]="countriesData"
+    ></app-countries-component-country-table>
   </div>
 </div>
