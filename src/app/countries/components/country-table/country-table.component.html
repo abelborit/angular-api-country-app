@@ -30,6 +30,11 @@
         <td>{{ country.population | number }}</td>
         <td>
           <!-- cuando al routerLink se coloca entre llaves cuadradas aparte de recibir un string puede recibir un arreglo con los segmentos de la ruta -->
+          <!--
+            routerLink = "/ruta", se toma como una ruta absoluta y no depende de la url en donde te encuentres. Es decir, que poniendolo de esa manera te enviara a la pantalla "View more..." sin problemas.
+
+            routerLink = "ruta", se toma como una ruta relativa, de modo que toma la ruta actual en donde te encuentras y le concatena lo que tienes en routerLink, por eso se ve como http://localhost:4200/countries/by/:id
+           -->
           <a [routerLink]="['/countries/by', country.cca3]">View more...</a>
         </td>
       </tr>
