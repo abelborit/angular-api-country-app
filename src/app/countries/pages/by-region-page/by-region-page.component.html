@@ -21,8 +21,13 @@
 <div class="row">
   <!-- Search Box -->
   <div class="col">
-    <app-shared-components-search-box
+    <!-- <app-shared-components-search-box
       (handleSearchValueEmitter)="handleSearchByRegion($event)"
+      [placeholderProp]="'Search by Region...'"
+    ></app-shared-components-search-box> -->
+
+    <app-shared-components-search-box
+      (handleDebouceSearchValueEmitter)="handleSearchByRegion($event)"
       [placeholderProp]="'Search by Region...'"
     ></app-shared-components-search-box>
 
