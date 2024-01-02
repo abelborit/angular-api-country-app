@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CountryInterface } from '../interfaces/country.interface';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, delay, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
@@ -11,21 +11,30 @@ export class CountriesService {
   private serviceURL: string = 'https://restcountries.com/v3.1';
   public countriesData: CountryInterface[] = [];
 
+  private handleGetCountriesRequest(
+    url: string
+  ): Observable<CountryInterface[]> {
+    /* este this.httpClient.get() regresa un Observable entonces si se hace un return de eso hay que definir que la función handleSearchCapital_Service retornará algo de tipo Observable con un dato de tipo X que en este caso sería CountryInterface[]. Este Observable es como si fuera un Promise pero aquí lo trabajaremos de tipo Observable que es de la programación reactiva de RxJs */
+    /* hasta ahí estamos configurando y definiendo la solicitud que haremos y el Observable que vamos a emitir pero hasta no suscribirse a ese Observable entonces no se ejecuta esa solicitud ni escucharemos los cambios que tenga. En este caso se hará la suscripción en by-capital-page.component.ts */
+    /* los observables tienen un método llamado pipe que es poderoso y tiene varias cosas, por ejemplo, es un método donde se puede especificar diferentes operadores de RxJs. Se puede usar el tab, map, etc.... de RxJs pero aquí usaremos el catchError */
+
+    return this.httpClient.get<CountryInterface[]>(url).pipe(
+      catchError(() => of([])), // forma corta con return implícito y sin usar el error
+      // catchError((error) => {
+      //   console.log(error);
+      //   /* regresar un nuevo observable usando el of() de RxJs que sirve para construir un nuevo observable a partir del argumento que se le manda, es decir, en este caso si hay un error entonces va a regresar un nuevo observable pero este será un arreglo vacío */
+      //   return of([]);
+      // })
+      delay(1500) // darle 1500 milésimas de segundo de retraso para emitir el observable. No va a demorar 1500 ms en hacer la petición, sino que una vez que se emite el valor del observable va a tardar 1500 ms para que continúe el ciclo o flujo de información dentro de nuestro observable
+    );
+  }
+
   handleSearchCapital_Service(
     searchValue: string
   ): Observable<CountryInterface[]> {
     const capitalURL = `${this.serviceURL}/capital/${searchValue}`;
-    /* este this.httpClient.get() regresa un Observable entonces si se hace un return de eso hay que definir que la función handleSearchCapital_Service retornará algo de tipo Observable con un dato de tipo X que en este caso sería CountryInterface[]. Este Observable es como si fuera un Promise pero aquí lo trabajaremos de tipo Observable que es de la programación reactiva de RxJs */
-    /* hasta ahí estamos configurando y definiendo la solicitud que haremos y el Observable que vamos a emitir pero hasta no suscribirse a ese Observable entonces no se ejecuta esa solicitud ni escucharemos los cambios que tenga. En este caso se hará la suscripción en by-capital-page.component.ts */
-    /* los observables tienen un método llamado pipe que es poderoso y tiene varias cosas, por ejemplo, es un método donde se puede especificar diferentes operadores de RxJs. Se puede usar el tab, map, etc.... de RxJs pero aquí usaremos el catchError */
-    return this.httpClient.get<CountryInterface[]>(capitalURL).pipe(
-      // catchError(() => of([])), // forma corta con return implícito y sin usar el error
-      catchError((error) => {
-        console.log(error);
-        /* regresar un nuevo observable usando el of() de RxJs que sirve para construir un nuevo observable a partir del argumento que se le manda, es decir, en este caso si hay un error entonces va a regresar un nuevo observable pero este será un arreglo vacío */
-        return of([]);
-      })
-    );
+
+    return this.handleGetCountriesRequest(capitalURL);
   }
 
   handleSearchCountry_Service(
@@ -33,9 +42,7 @@ export class CountriesService {
   ): Observable<CountryInterface[]> {
     const countryURL = `${this.serviceURL}/name/${searchValue}`;
 
-    return this.httpClient
-      .get<CountryInterface[]>(countryURL)
-      .pipe(catchError(() => of([])));
+    return this.handleGetCountriesRequest(countryURL);
   }
 
   handleSearchRegion_Service(
@@ -43,9 +50,7 @@ export class CountriesService {
   ): Observable<CountryInterface[]> {
     const regionURL = `${this.serviceURL}/region/${searchValue}`;
 
-    return this.httpClient
-      .get<CountryInterface[]>(regionURL)
-      .pipe(catchError(() => of([])));
+    return this.handleGetCountriesRequest(regionURL);
   }
 
   /* FORMA 1: regresando un array con un elemento según como trabaja la API */
