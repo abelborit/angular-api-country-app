@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CountryInterface } from '../interfaces/country.interface';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
@@ -48,15 +48,33 @@ export class CountriesService {
       .pipe(catchError(() => of([])));
   }
 
+  /* FORMA 1: regresando un array con un elemento según como trabaja la API */
+  /* este endpoint de la API al buscar por alpha code regresa un arreglo con el elemento porque así funciona la API: https://restcountries.com/v3.1/alpha/CRI (donde CRI es Costa Rica) así que es importante tener eso en cuenta. Aquí técnicamente deberíamos regresar un elemento y no en un arreglo aunque depende cómo queremos que trabaje nuestro código así que es relativo */
+  // handleSearchCountryByAlphaCode_Service(
+  //   searchAlphaCode: string
+  // ): Observable<CountryInterface[]> {
+  //   const byAlphaCodeURL = `${this.serviceURL}/alpha/${searchAlphaCode}`;
+
+  //   return this.httpClient
+  //     .get<CountryInterface[]>(byAlphaCodeURL)
+  //     .pipe(catchError(() => of([])));
+  // }
+
+  /* FORMA 2: regresando un elemento usando RxJS y los pipes y el operador map() que sirve para transformar la información que recibe y retornar la información modificada o transformada */
   /* este endpoint de la API al buscar por alpha code regresa un arreglo con el elemento porque así funciona la API: https://restcountries.com/v3.1/alpha/CRI (donde CRI es Costa Rica) así que es importante tener eso en cuenta. Aquí técnicamente deberíamos regresar un elemento y no en un arreglo aunque depende cómo queremos que trabaje nuestro código así que es relativo */
   handleSearchCountryByAlphaCode_Service(
     searchAlphaCode: string
-  ): Observable<CountryInterface[]> {
+  ): Observable<CountryInterface | null> {
     const byAlphaCodeURL = `${this.serviceURL}/alpha/${searchAlphaCode}`;
 
-    return this.httpClient
-      .get<CountryInterface[]>(byAlphaCodeURL)
-      .pipe(catchError(() => of([])));
+    return this.httpClient.get<CountryInterface[]>(byAlphaCodeURL).pipe(
+      map((response) => {
+        // console.log({ response });
+        /* regresar el primer elemento de arreglo o sino un null para manejar así mi código */
+        return response.length > 0 ? response[0] : null;
+      }),
+      catchError(() => of(null))
+    );
   }
 }
 
