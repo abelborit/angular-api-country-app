@@ -13,8 +13,10 @@ export class ByCapitalPageComponent {
 
   public capitalSearchedValue: string = '';
   public countriesData: CountryInterface[] = [];
+  public isLoading: boolean = false;
 
   handleSearchByCapital(searchValue: string): void {
+    this.isLoading = true;
     // console.log('ByCapitalPageComponent - handleSearchByCapital');
     // console.log({ searchValue });
     this.capitalSearchedValue = searchValue;
@@ -24,6 +26,8 @@ export class ByCapitalPageComponent {
       .subscribe((response) => {
         // console.log(response);
         this.countriesData = response;
+        /* cuando acabe la petición y ya tenga el resultado ya sea positivo o negativo (array con los elementos o un array vacío) entonces cambiar el isLoading */
+        this.isLoading = false;
       });
   }
 }
