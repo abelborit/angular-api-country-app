@@ -87,7 +87,8 @@ export class CountryPageComponent implements OnInit {
   //   return Object.values(this.countryInfo!.translations);
   // }
 
-  handleGoBack(): void {
-    this.location.back();
-  }
+  /* aquí puede ser que tengamos el posible inconveniente de salirnos de la aplicación si retrocedemos sin tener previamente nuestra web en el stack del historial entonces para eso puede ser que nos convenga que se redirija a una ruta en específico */
+  // handleGoBack(): void {
+  //   this.location.back();
+  // }
 }

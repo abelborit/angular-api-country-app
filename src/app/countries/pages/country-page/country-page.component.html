@@ -10,8 +10,14 @@
         Country: <strong>{{ countryInfo.name.common }}</strong>
       </h2>
       <hr />
-      <button class="btn btn-primary mb-3" (click)="handleGoBack()">
+      <!-- <button class="btn btn-primary mb-3" (click)="handleGoBack()">
         Go Back
+      </button> -->
+      <button
+        class="btn btn-success mb-3"
+        [routerLink]="['/countries/by-capital']"
+      >
+        Go Home
       </button>
     </div>
   </div>
