@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CountriesService } from '../../services/countries.service';
 import { switchMap } from 'rxjs';
 import { CountryInterface } from '../../interfaces/country.interface';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-countries-pages-country-page',
@@ -16,7 +17,8 @@ export class CountryPageComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private countriesService: CountriesService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   /* se coloca como opcional ya que el componente en un primer momento es null ya que aún no hemos entrado a ver su información */
@@ -84,4 +86,8 @@ export class CountryPageComponent implements OnInit {
   // get countryTranslations() {
   //   return Object.values(this.countryInfo!.translations);
   // }
+
+  handleGoBack(): void {
+    this.location.back();
+  }
 }
