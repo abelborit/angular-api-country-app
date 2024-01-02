@@ -28,7 +28,10 @@
         <td>{{ country.name.common }}</td>
         <td>{{ country.capital }}</td>
         <td>{{ country.population | number }}</td>
-        <td><a href="#">View more...</a></td>
+        <td>
+          <!-- cuando al routerLink se coloca entre llaves cuadradas aparte de recibir un string puede recibir un arreglo con los segmentos de la ruta -->
+          <a [routerLink]="['/countries/by', country.cca3]">View more...</a>
+        </td>
       </tr>
     </tbody>
   </table>

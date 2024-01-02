@@ -1,1 +1,63 @@
-<p>country-page works!</p>
+<ng-template #loading>
+  <div class="alert alert-info text-center">Wait please, loading...</div>
+</ng-template>
+
+<div *ngIf="countryInfo; else loading">
+  <div class="row">
+    <div class="col-12">
+      <!-- si no se colocara el condicional arriba o el *ngIf de que si hay el countryInfo entonces muestre este HTML y si no entonces el loading entonces sería necesario colocar countryInfo?.name?.common porque sabrá que puede ser null -->
+      <h2>
+        Country: <strong>{{ countryInfo.name.common }}</strong>
+      </h2>
+      <hr />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4">
+      <h3>Flag</h3>
+      <img
+        [src]="countryInfo.flags.svg"
+        [alt]="countryInfo.name.common"
+        class="img-thumbnail"
+      />
+    </div>
+
+    <div class="col">
+      <h3>Information</h3>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <strong>Population:</strong> {{ countryInfo.population | number }}
+        </li>
+
+        <li class="list-group-item">
+          <strong>Code:</strong> {{ countryInfo.cca3 }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col">
+      <h3>Traductions</h3>
+
+      <div class="d-flex flex-wrap">
+        <!-- a través de la función get countryTranslations de country-page.component.ts -->
+        <!-- <span
+          *ngFor="let translation of countryTranslations"
+          class="badge bg-primary m-1"
+        >
+          {{ translation.common }}
+        </span> -->
+
+        <!-- hacerlo de forma directa mediante el pipe keyvalue donde translation daría bien la key o el value y en el value estaría el common que viene de la interface -->
+        <span
+          *ngFor="let translation of countryInfo.translations | keyvalue"
+          class="badge bg-primary m-1"
+        >
+          {{ translation.value.common }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

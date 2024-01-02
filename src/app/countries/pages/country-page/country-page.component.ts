@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CountriesService } from '../../services/countries.service';
 import { switchMap } from 'rxjs';
+import { CountryInterface } from '../../interfaces/country.interface';
 
 @Component({
   selector: 'app-countries-pages-country-page',
@@ -17,6 +18,9 @@ export class CountryPageComponent implements OnInit {
     private countriesService: CountriesService,
     private router: Router
   ) {}
+
+  /* se coloca como opcional ya que el componente en un primer momento es null ya que aún no hemos entrado a ver su información */
+  public countryInfo?: CountryInterface;
 
   /* FORMA 1: teniendo todo en el ngOnInit y creando un observable hell */
   // ngOnInit(): void {
@@ -72,8 +76,12 @@ export class CountryPageComponent implements OnInit {
           return this.router.navigateByUrl('');
         }
 
-        console.log('there is country ✅');
-        return;
+        // console.log('there is country ✅');
+        return (this.countryInfo = response);
       });
   }
+
+  // get countryTranslations() {
+  //   return Object.values(this.countryInfo!.translations);
+  // }
 }
