@@ -18,11 +18,16 @@ En esta sección veremos los fundamentos de una aplicación SPA (Single Page App
 - Tipado de datos
 - Menú de aplicación
 
-### \* PASOS A REALIZAR:
+Aquí continuaremos la aplicación de países, pero enfocados en la parte de las sugerencias, debounce y mantener el estado de las consultas, los temas serán:
 
-1. ejemplo
-2. ejemplo
-3. ejemplo
+- ngClass y diferentes formas de manipular clases
+- CSS condicionales
+- Optimizaciones a peticiones HTTP
+- Debounce manual mediante RxJs
+- LocalStorage
+- Ideas de Store
+- Re-utilización de componentes
+- Varios operadores de RxJS aplicados
 
 ### \* RECURSOS A USAR:
 
