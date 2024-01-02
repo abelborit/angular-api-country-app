@@ -47,6 +47,17 @@ export class CountriesService {
       .get<CountryInterface[]>(regionURL)
       .pipe(catchError(() => of([])));
   }
+
+  /* este endpoint de la API al buscar por alpha code regresa un arreglo con el elemento porque así funciona la API: https://restcountries.com/v3.1/alpha/CRI (donde CRI es Costa Rica) así que es importante tener eso en cuenta. Aquí técnicamente deberíamos regresar un elemento y no en un arreglo aunque depende cómo queremos que trabaje nuestro código así que es relativo */
+  handleSearchCountryByAlphaCode_Service(
+    searchAlphaCode: string
+  ): Observable<CountryInterface[]> {
+    const byAlphaCodeURL = `${this.serviceURL}/alpha/${searchAlphaCode}`;
+
+    return this.httpClient
+      .get<CountryInterface[]>(byAlphaCodeURL)
+      .pipe(catchError(() => of([])));
+  }
 }
 
 /* En RxJS, los operadores no modifican el Observable original, lo que hacen es devolver un nuevo Observable. Los operadores de RxJS son funciones puras que toman un Observable como entrada y generan otro Observable como salida. Al suscribirte al Observable de salida también te suscribes al Observable de entrada. Entonces, aunque los objetos en JavaScript se pasen por referencia, los operadores de RxJS están diseñados para no modificar el Observable original. Así que sí, aún tienes un Observable original después de aplicar un operador de RxJS. Si deseas leer más detalles, puedes consultar la documentación de RxJS que te comparto a continuación. */
