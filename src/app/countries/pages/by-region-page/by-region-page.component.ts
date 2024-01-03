@@ -12,7 +12,7 @@ export class ByRegionPageComponent {
   /* inyectar el servicio de CountriesService en el constructor() */
   constructor(private countriesService: CountriesService) {}
 
-  public regionSearchedValue: string = '';
+  public regionSearchedValue?: string;
   public countriesData: CountryInterface[] = [];
   public regions: RegionType[] = [
     'Africa',
@@ -22,6 +22,15 @@ export class ByRegionPageComponent {
     'Oceania',
   ];
   public selectedRegion?: RegionType;
+
+  ngOnInit(): void {
+    /* se podría colocar en el constructor pero en el constructor es más que todo para inyección de dependencias y no tanto para cargar cosas del servicio, para eso usamos el OnInit y ngOnInit */
+    this.regionSearchedValue =
+      this.countriesService.cacheStore.byRegion.searchValue;
+
+    this.countriesData =
+      this.countriesService.cacheStore.byRegion.searchResponse;
+  }
 
   handleSearchByRegion(searchValue: RegionType): void {
     // console.log('ByRegionPageComponent - handleSearchByRegion');

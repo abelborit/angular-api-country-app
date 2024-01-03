@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CountryInterface } from '../interfaces/country.interface';
-import { Observable, catchError, delay, map, of } from 'rxjs';
+import { Observable, catchError, delay, map, of, tap } from 'rxjs';
+import { CacheStore } from '../interfaces/cache-store.interface';
+import { RegionType } from '../interfaces/region.type';
 
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
@@ -10,6 +12,12 @@ export class CountriesService {
 
   private serviceURL: string = 'https://restcountries.com/v3.1';
   public countriesData: CountryInterface[] = [];
+
+  public cacheStore: CacheStore = {
+    byCapital: { searchValue: '', searchResponse: [] },
+    byCountry: { searchValue: '', searchResponse: [] },
+    byRegion: { searchResponse: [] },
+  };
 
   private handleGetCountriesRequest(
     url: string
@@ -34,7 +42,16 @@ export class CountriesService {
   ): Observable<CountryInterface[]> {
     const capitalURL = `${this.serviceURL}/capital/${searchValue}`;
 
-    return this.handleGetCountriesRequest(capitalURL);
+    /* como esto retorna un observable entonces se puede usar lógica de RxJS y usar los pipes para manejar lo que emite el observable. Aquí se va a disparar un efecto secundario con el operador tap(). Este tap() en pocas palabras es que cuando venga la información del observable entonces pasa por el tap() y ejecuta la lógica que tiene el tap() pero no va a influir en nada en el funcionamiento de la emisión que está haciendo el observable this.handleGetCountriesRequest(capitalURL) */
+    return this.handleGetCountriesRequest(capitalURL).pipe(
+      tap(
+        (countries) =>
+          (this.cacheStore.byCapital = {
+            searchValue: searchValue,
+            searchResponse: countries,
+          })
+      )
+    );
   }
 
   handleSearchCountry_Service(
@@ -42,15 +59,31 @@ export class CountriesService {
   ): Observable<CountryInterface[]> {
     const countryURL = `${this.serviceURL}/name/${searchValue}`;
 
-    return this.handleGetCountriesRequest(countryURL);
+    return this.handleGetCountriesRequest(countryURL).pipe(
+      tap(
+        (countries) =>
+          (this.cacheStore.byCountry = {
+            searchValue: searchValue,
+            searchResponse: countries,
+          })
+      )
+    );
   }
 
   handleSearchRegion_Service(
-    searchValue: string
+    searchValue: RegionType
   ): Observable<CountryInterface[]> {
     const regionURL = `${this.serviceURL}/region/${searchValue}`;
 
-    return this.handleGetCountriesRequest(regionURL);
+    return this.handleGetCountriesRequest(regionURL).pipe(
+      tap(
+        (countries) =>
+          (this.cacheStore.byRegion = {
+            searchValue: searchValue,
+            searchResponse: countries,
+          })
+      )
+    );
   }
 
   /* FORMA 1: regresando un array con un elemento según como trabaja la API */
@@ -83,5 +116,30 @@ export class CountriesService {
   }
 }
 
+/* ******************************************************************************************************************* */
 /* En RxJS, los operadores no modifican el Observable original, lo que hacen es devolver un nuevo Observable. Los operadores de RxJS son funciones puras que toman un Observable como entrada y generan otro Observable como salida. Al suscribirte al Observable de salida también te suscribes al Observable de entrada. Entonces, aunque los objetos en JavaScript se pasen por referencia, los operadores de RxJS están diseñados para no modificar el Observable original. Así que sí, aún tienes un Observable original después de aplicar un operador de RxJS. Si deseas leer más detalles, puedes consultar la documentación de RxJS que te comparto a continuación. */
 /* Aunque los objetos en JavaScript se pasan por referencia, los Observables en RxJS tienen un comportamiento especial. Cuando aplicas un operador a un Observable, no modificas el Observable original, en su lugar, como se mencionó anteriormente, se crea un nuevo Observable. Así que el Observable original se mantiene sin cambios. En cuanto a tu pregunta sobre si los Observables se pasan por referencia, la respuesta es sí. Pero debido a la forma en que están diseñados los operadores de RxJS, no modifican el Observable original. En vez de hacer eso, crean un nuevo Observable, por lo tanto, aunque el Observable se pasa por referencia, el Observable original no se modifica. */
+
+/* ******************************************************************************************************************* */
+/* La lógica que tenía cada archivo que se mencionará abajo, tenía la información de cada endpoint a usar, una ventaja era de que todo estaba encapsulado por componente y funcionalidad según lo que se necesite pero el problema es que al cambiar de ruta entonces el componente se va destruyendo y creando lo cual hace que al regresar a la ruta en la que se estaba, la información se destruya también y se inicialice de nuevo el componente desde cero.
+
+- Para solucionar eso entonces se podría pasar toda esa lógica a este servicio ya que este se inicializa la primera vez y se crea su instancia y luego se puede utilizar como un estado general de la información de esta parte de la aplicación y como está proveído en el root ({ providedIn: 'root' }) entonces sobrevive al cambio de rutas porque al cambiar entre ruta y ruta usa la misma instancia de esta clase que vendría a ser un servicio.
+
+- Otra forma sería hacer uso de los pipes ya que como se tienen observables y en los archivos mencionados abajo recién se suscriben entonces aquí en el servicio podemos hacer uso de RxJS para ir manejando la información que emite estos observables
+
+- Otra forma también sería utilizar el localStorage ya que la información se guarda como en una base de datos interna del navegador lo cual hará que se conserve la información y luego mandar a llamar desde localStorage al cambiar entre rutas y al recargar la página
+
+Archivos:
+  1. by-capital-page.component.ts
+  2. by-country-page.component.ts
+  3. by-region-page.component.ts
+*/
+
+/* ******************************************************************************************************************* */
+/* La diferencia entre providedIn: root, providedIn: platform, y providedIn: any está relacionada directamente con la forma en que se proporciona una instancia de un servicio y cómo se comparte esa instancia entre los componentes y módulos en una aplicación. (https://angular.io/guide/providers)
+
+- providedIn: root: Singleton, una única instancia para toda la aplicación.
+- providedIn: platform: Crea una instancia única para cada plataforma en la que se ejecute la aplicación.
+- providedIn: any: Transitorio, crea una nueva instancia para cada componente que lo solicite.
+
+La elección de cuál debes usar depende de la lógica de negocio y los requisitos de la aplicación. Normalmente, providedIn: root es la opción más común y recomendada para la mayoría de las aplicaciones, ya que proporciona una única instancia global que puede ser compartida y reutilizada eficientemente en toda la aplicación. Sin embargo, las otras opciones pueden ser útiles en casos específicos donde se necesite tener diferentes instancias del servicio según la plataforma o el componente que lo solicite. */
