@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CountriesService } from '../../services/countries.service';
 import { CountryInterface } from '../../interfaces/country.interface';
 
+type Region = 'Africa' | 'Americas' | 'Asia' | 'Europe' | 'Oceania';
+
 @Component({
   selector: 'app-countries-pages-by-region-page',
   templateUrl: './by-region-page.component.html',
@@ -13,10 +15,19 @@ export class ByRegionPageComponent {
 
   public regionSearchedValue: string = '';
   public countriesData: CountryInterface[] = [];
+  public regions: Region[] = [
+    'Africa',
+    'Americas',
+    'Asia',
+    'Europe',
+    'Oceania',
+  ];
+  public selectedRegion?: Region;
 
-  handleSearchByRegion(searchValue: string): void {
+  handleSearchByRegion(searchValue: Region): void {
     // console.log('ByRegionPageComponent - handleSearchByRegion');
     // console.log({ searchValue });
+    this.selectedRegion = searchValue;
     this.regionSearchedValue = searchValue;
 
     this.countriesService
