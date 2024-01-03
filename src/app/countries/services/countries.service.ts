@@ -8,7 +8,7 @@ import { RegionType } from '../interfaces/region.type';
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
   /* el HttpClient es algo que no viene por defecto en Angular sino que es parte del HttpClientModule entonces hay que importar el módulo y como este HttpClientModule es algo que vamos a utilizar en toda la aplicación por el tema de las peticiones HTTP entonces se coloca en el imports del módulo principal que sería app.module.ts o sino sería en el módulo en donde lo vayamos a necesitar */
-  /* se dijo que en el constructor es más que todo para la inyección de dependencias o inyectar un servicio pero en este caso como no es un componente y es un servicio entonces se puede hacer la carga inicial de algo aquí porque es parte de lo que quiero que se ejecute cuando se inicializa esta clase o servicio y en este caso se cargará la data del localStorage */
+  /* se dijo que en el constructor es más que todo para la inyección de dependencias o inyectar un servicio pero en este caso como no es un componente y es un servicio entonces se tiene que hacer la carga inicial de algo aquí porque es parte de lo que quiero que se ejecute cuando se inicializa esta clase o servicio muy aparte que aquí en el CountriesService no tenemos el OnInit, tener en cuenta que los Component Lifecycle son exclusivos de los componentes y ahora estamos trabajando en un servicio, de ahí que inicialicemos en el constructor y en este caso se cargará la data del localStorage. Ahora, perfectamente se podría ir a tu app.component.ts por ejemplo, implementar el servicio y ahí si en un OnInit llamarlo, ya que ahora sí estamos dentro de un componente. Pero al final vamos a lograr lo mismo, y estamos sacando el código fuera, haciendo más engorrosa la app, de ahí que aquí dejemos todo dentro del propio servicio. */
   constructor(private httpClient: HttpClient) {
     this.loadToLocalStorage();
   }
@@ -181,3 +181,18 @@ Archivos:
 - providedIn: any: Transitorio, crea una nueva instancia para cada componente que lo solicite.
 
 La elección de cuál debes usar depende de la lógica de negocio y los requisitos de la aplicación. Normalmente, providedIn: root es la opción más común y recomendada para la mayoría de las aplicaciones, ya que proporciona una única instancia global que puede ser compartida y reutilizada eficientemente en toda la aplicación. Sin embargo, las otras opciones pueden ser útiles en casos específicos donde se necesite tener diferentes instancias del servicio según la plataforma o el componente que lo solicite. */
+
+/* ******************************************************************************************************************* */
+/* ¿Cómo determinamos cuando es el caso mas indicado de usar el constructor y cuando el ngOnInit? */
+/*
+  - El constructor se utiliza para inicializar las propiedades de una clase.
+  - El ngOnInit se utiliza para realizar tareas que deben realizarse una vez que el componente se ha inicializado.
+
+En general, se recomienda utilizar el constructor para inicializar propiedades que son necesarias para que el componente funcione correctamente. Por ejemplo, si el componente necesita una conexión a la base de datos, entonces se debe inicializar la propiedad de la conexión en el constructor.
+
+El ngOnInit se debe utilizar para realizar tareas que no son necesarias para el funcionamiento básico del componente. Por ejemplo, si el componente necesita cargar datos de un servidor, entonces se puede realizar esta tarea en el ngOnInit.
+
+En resumen, se recomienda seguir las siguientes reglas para determinar cuándo utilizar el constructor y cuándo utilizar el ngOnInit:
+  - Utilice el constructor para inicializar propiedades que son necesarias para el funcionamiento básico del componente.
+  - Utilice el ngOnInit para realizar tareas que no son necesarias para el funcionamiento básico del componente.
+*/
