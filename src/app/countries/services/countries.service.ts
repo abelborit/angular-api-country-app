@@ -8,7 +8,10 @@ import { RegionType } from '../interfaces/region.type';
 @Injectable({ providedIn: 'root' })
 export class CountriesService {
   /* el HttpClient es algo que no viene por defecto en Angular sino que es parte del HttpClientModule entonces hay que importar el módulo y como este HttpClientModule es algo que vamos a utilizar en toda la aplicación por el tema de las peticiones HTTP entonces se coloca en el imports del módulo principal que sería app.module.ts o sino sería en el módulo en donde lo vayamos a necesitar */
-  constructor(private httpClient: HttpClient) {}
+  /* se dijo que en el constructor es más que todo para la inyección de dependencias o inyectar un servicio pero en este caso como no es un componente y es un servicio entonces se puede hacer la carga inicial de algo aquí porque es parte de lo que quiero que se ejecute cuando se inicializa esta clase o servicio y en este caso se cargará la data del localStorage */
+  constructor(private httpClient: HttpClient) {
+    this.loadToLocalStorage();
+  }
 
   private serviceURL: string = 'https://restcountries.com/v3.1';
   public countriesData: CountryInterface[] = [];
@@ -18,6 +21,37 @@ export class CountriesService {
     byCountry: { searchValue: '', searchResponse: [] },
     byRegion: { searchResponse: [] },
   };
+
+  private saveToLocalStorage() {
+    localStorage.setItem('cacheStore', JSON.stringify(this.cacheStore));
+  }
+
+  private loadToLocalStorage() {
+    if (!localStorage.getItem('cacheStore')) return;
+
+    this.cacheStore = JSON.parse(
+      localStorage.getItem('cacheStore') ||
+        `{
+          byCapital: { searchValue: '', searchResponse: [] },
+          byCountry: { searchValue: '', searchResponse: [] },
+          byRegion: { searchResponse: [] },
+         }`
+    );
+  }
+
+  /* el diseño de las funciones cleanLocalStorage y cleanCacheStore estarían bien. cleanLocalStorage es el método público que se encarga de la limpieza del localStorage y de llamar al método privado cleanCacheStore para realizar la manipulación directa de los estados internos de la clase. Este diseño sigue el principio de encapsulación, ya que el método privado cleanCacheStore se encarga de realizar una tarea específica dentro de la clase, y el método público cleanLocalStorage se encarga de exponer la funcionalidad que el usuario de la clase debería utilizar. */
+  private cleanCacheStore() {
+    this.cacheStore = {
+      byCapital: { searchValue: '', searchResponse: [] },
+      byCountry: { searchValue: '', searchResponse: [] },
+      byRegion: { searchResponse: [] },
+    };
+  }
+
+  public cleanLocalStorage() {
+    localStorage.removeItem('cacheStore');
+    this.cleanCacheStore();
+  }
 
   private handleGetCountriesRequest(
     url: string
@@ -50,7 +84,9 @@ export class CountriesService {
             searchValue: searchValue,
             searchResponse: countries,
           })
-      )
+      ),
+      /* se coloca aquí el saveToLocalStorage() porque en este punto recién se tiene la data y la respuesta del observable */
+      tap(() => this.saveToLocalStorage())
     );
   }
 
@@ -66,7 +102,8 @@ export class CountriesService {
             searchValue: searchValue,
             searchResponse: countries,
           })
-      )
+      ),
+      tap(() => this.saveToLocalStorage())
     );
   }
 
@@ -82,7 +119,8 @@ export class CountriesService {
             searchValue: searchValue,
             searchResponse: countries,
           })
-      )
+      ),
+      tap(() => this.saveToLocalStorage())
     );
   }
 

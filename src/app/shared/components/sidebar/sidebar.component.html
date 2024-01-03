@@ -66,3 +66,15 @@
     By Region
   </li>
 </ul>
+
+<button
+  *ngIf="
+    getAllInfoCountries.byCapital.searchValue ||
+    getAllInfoCountries.byCountry.searchValue ||
+    getAllInfoCountries.byRegion.searchValue
+  "
+  class="btn btn-danger mt-4"
+  (click)="handleCleanStorage()"
+>
+  Clear all searches
+</button>
