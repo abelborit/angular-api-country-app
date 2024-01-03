@@ -36,8 +36,14 @@ Aquí continuaremos la aplicación de países, pero enfocados en la parte de las
   <!-- Bootstrap CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
   ```
-- ejemplo
-- ejemplo
+- del-cli: https://www.npmjs.com/package/del-cli
+  - `npm i del-cli`
+- copyfiles: https://www.npmjs.com/package/copyfiles
+  - `npm i copyfiles`
+
+### \* NOTAS:
+
+- Se añadirán algunos scrips en el package.json para que al hacer el build se cree la carpeta docs y también que en el index.html del buils en el <base href="/" /> se coloque <base href="./" /> para no tener problemas con los archivos al subirlo a GitHub Pages.
 
 ---
 
