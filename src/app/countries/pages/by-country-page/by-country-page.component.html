@@ -1,49 +1,55 @@
-<h2>
-  <strong>By Country: </strong>
-  <!-- condicional if else con pipe de titlecase-->
-  <small *ngIf="countrySearchedValue; else noValueTemplate" class="text-success"
-    >{{ countrySearchedValue | titlecase }}
+<app-shared-components-loader *ngIf="isLoading"></app-shared-components-loader>
 
+<div *ngIf="!isLoading">
+  <h2>
+    <strong>By Country: </strong>
+    <!-- condicional if else con pipe de titlecase-->
     <small
-      *ngIf="countrySearchedValue && countriesData.length === 0"
-      class="text-danger"
-    >
-      (not found)
+      *ngIf="countrySearchedValue; else noValueTemplate"
+      class="text-success"
+      >{{ countrySearchedValue | titlecase }}
+
+      <small
+        *ngIf="countrySearchedValue && countriesData.length === 0"
+        class="text-danger"
+      >
+        (not found)
+      </small>
     </small>
-  </small>
 
-  <ng-template #noValueTemplate>
-    <small class="text-danger">No search yet</small>
-  </ng-template>
-</h2>
-<hr />
+    <ng-template #noValueTemplate>
+      <small class="text-danger">No search yet</small>
+    </ng-template>
+  </h2>
+  <hr />
 
-<div class="row">
-  <!-- Search Box -->
-  <div class="col">
-    <!-- <app-shared-components-search-box
-      (handleSearchValueEmitter)="handleSearchByCountry($event)"
-      [placeholderProp]="'Search by Country...'"
-    ></app-shared-components-search-box> -->
+  <div class="row">
+    <!-- Search Box -->
+    <div class="col">
+      <!-- <app-shared-components-search-box
+        (handleSearchValueEmitter)="handleSearchByCountry($event)"
+        [placeholderProp]="'Search by Country...'"
+      ></app-shared-components-search-box> -->
 
-    <app-shared-components-search-box
-      (handleDebouceSearchValueEmitter)="handleSearchByCountry($event)"
-      [placeholderProp]="'Search by Country...'"
-    ></app-shared-components-search-box>
+      <app-shared-components-search-box
+        (handleDebouceSearchValueEmitter)="handleSearchByCountry($event)"
+        [placeholderProp]="'Search by Country...'"
+      ></app-shared-components-search-box>
 
-    <!-- también se puede mandar sin llaves cuadradas pero eso significará que siempre se mandará un string, que en este caso es lo que placeholderProp espera -->
-    <!-- <app-shared-components-search-box
-      placeholderProp="Search by Country..."
-    ></app-shared-components-search-box> -->
+      <!-- también se puede mandar sin llaves cuadradas pero eso significará que siempre se mandará un string, que en este caso es lo que placeholderProp espera -->
+      <!-- <app-shared-components-search-box
+        placeholderProp="Search by Country..."
+      ></app-shared-components-search-box> -->
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <!-- Results Table -->
-  <div class="col">
-    <hr />
-    <app-countries-component-country-table
-      [countriesList]="countriesData"
-    ></app-countries-component-country-table>
+  <div class="row">
+    <!-- Results Table -->
+    <div class="col">
+      <hr />
+      <app-countries-component-country-table
+        [countriesList]="countriesData"
+      ></app-countries-component-country-table>
+    </div>
   </div>
 </div>

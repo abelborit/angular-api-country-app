@@ -22,6 +22,7 @@ export class ByRegionPageComponent {
     'Oceania',
   ];
   public selectedRegion?: RegionType;
+  public isLoading: boolean = false;
 
   ngOnInit(): void {
     /* se podría colocar en el constructor pero en el constructor es más que todo para inyección de dependencias y no tanto para cargar cosas del servicio, para eso usamos el OnInit y ngOnInit */
@@ -33,6 +34,7 @@ export class ByRegionPageComponent {
   }
 
   handleSearchByRegion(searchValue: RegionType): void {
+    this.isLoading = true;
     // console.log('ByRegionPageComponent - handleSearchByRegion');
     // console.log({ searchValue });
     this.selectedRegion = searchValue;
@@ -43,6 +45,7 @@ export class ByRegionPageComponent {
       .subscribe((response) => {
         // console.log(response);
         this.countriesData = response;
+        this.isLoading = false;
       });
   }
 }

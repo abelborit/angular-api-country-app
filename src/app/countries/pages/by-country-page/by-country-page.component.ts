@@ -13,6 +13,7 @@ export class ByCountryPageComponent implements OnInit {
 
   public countrySearchedValue: string = '';
   public countriesData: CountryInterface[] = [];
+  public isLoading: boolean = false;
 
   ngOnInit(): void {
     /* se podría colocar en el constructor pero en el constructor es más que todo para inyección de dependencias y no tanto para cargar cosas del servicio, para eso usamos el OnInit y ngOnInit */
@@ -24,6 +25,7 @@ export class ByCountryPageComponent implements OnInit {
   }
 
   handleSearchByCountry(searchValue: string): void {
+    this.isLoading = true;
     // console.log('ByCountryPageComponent - handleSearchByCountry');
     // console.log({ searchValue });
     this.countrySearchedValue = searchValue;
@@ -33,6 +35,7 @@ export class ByCountryPageComponent implements OnInit {
       .subscribe((response) => {
         // console.log(response);
         this.countriesData = response;
+        this.isLoading = false;
       });
   }
 }
