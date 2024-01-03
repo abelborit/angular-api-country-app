@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomePageComponent } from './shared/pages/home-page/home-page.component';
 import { AboutPageComponent } from './shared/pages/about-page/about-page.component';
 import { ContactPageComponent } from './shared/pages/contact-page/contact-page.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 /* con todo esto ya tengo un módulo independiente especializado en la navegación de la aplicación */
 const routes: Routes = [
@@ -44,5 +45,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  /* para que no se tenga problemas al hacer algún deploy, por ejemplo, en GitHub Pages en este caso, porque la primera vez que se entra a la página desplegada que nos da GitHub Pages carga todo normal pero cuando se refresca entonces aparece un 404 Not Found */
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
 })
 export class AppRoutingModule {}
