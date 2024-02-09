@@ -94,3 +94,24 @@ Aun así, aunque funcione, sigue siendo recomendable trabajar independientemente
 /* ******************************************************************************************************************* */
 /* Bajo la idea anterior donde se indica realizar un unsubscribe() de los observables excepto los realizados por una petición http, ¿También se debería hacer cuando se llama el subscribe() de un activeRoute para obtener los parametros que llegan por Url? */
 /* En el caso de los activeRoute contaría como excepción y no haría falta hacer lo mismo de ahora, ya que Angular se encargará de limpiarlo cuando el componente se destruya. */
+
+/* ******************************************************************************************************************* */
+/*
+En handleOnKeyPress se emiten valores tan pronto como el usuario escribe en el cuadro de búsqueda, mientras que en ngOnInit, se configura una suscripción que emitirá el último valor después de un retraso de 500 milisegundos, asegurando que la búsqueda se realice de manera más eficiente y sin sobrecargar el sistema con búsquedas innecesarias.
+
+    El motivo principal para configurar la suscripción al Subject y aplicar el retraso en el método ngOnInit es garantizar que esta configuración se realice una sola vez cuando el componente esté inicializado y listo para ser utilizado.
+
+    El método ngOnInit es parte del ciclo de vida de un componente en Angular y se llama una vez que Angular ha inicializado todas las propiedades de entrada (@Input) y se ha establecido la vista del componente. Esto garantiza que el componente esté completamente inicializado y listo para realizar cualquier acción necesaria.
+
+    Al configurar la suscripción al Subject y aplicar el retraso en ngOnInit, nos aseguramos de que esta configuración se realice solo una vez, evitando la posibilidad de múltiples suscripciones o retrasos innecesarios cada vez que se invoque un método que cause un ciclo de detección de cambios en Angular.
+
+    Además, al realizar esta configuración en ngOnInit, seguimos el principio de separación de preocupaciones y mantenemos el método handleOnKeyPress enfocado únicamente en manejar los eventos directos del cuadro de búsqueda, mientras que la lógica de retraso se maneja en un lugar separado, lo que mejora la claridad y la mantenibilidad del código.
+
+    En resumen, al realizar la configuración en ngOnInit, estamos siguiendo las mejores prácticas de Angular y garantizando que la lógica se configure de manera eficiente y efectiva durante la inicialización del componente.
+
+En handleOnKeyPress el método next() es parte de la interfaz de un Subject en RxJS y se utiliza para emitir un nuevo valor a los observadores suscritos a ese Subject.
+
+    Cuando el usuario escribe algo en el cuadro de búsqueda y presiona una tecla, el método handleOnKeyPress(searchValue: string) se llama, y dentro de este método, this.debouncer.next(searchValue.trim()) se utiliza para emitir ese valor al Subject debouncer.
+
+    Este patrón de usar next() para emitir valores es común en la programación reactiva y es la forma en que se propaga la información a través de secuencias observables en RxJS. Una vez que se emite un valor, cualquier observador suscrito a ese Subject recibirá ese valor y puede realizar acciones en consecuencia. En este caso particular, el valor emitido por next() se suscribirá más adelante en el método ngOnInit con subscribe(), donde se aplicará un retraso antes de que se emita a través del evento handleDebouceSearchValueEmitter.
+*/
