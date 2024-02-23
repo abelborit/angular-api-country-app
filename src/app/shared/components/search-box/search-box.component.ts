@@ -115,3 +115,70 @@ En handleOnKeyPress el método next() es parte de la interfaz de un Subject en R
 
     Este patrón de usar next() para emitir valores es común en la programación reactiva y es la forma en que se propaga la información a través de secuencias observables en RxJS. Una vez que se emite un valor, cualquier observador suscrito a ese Subject recibirá ese valor y puede realizar acciones en consecuencia. En este caso particular, el valor emitido por next() se suscribirá más adelante en el método ngOnInit con subscribe(), donde se aplicará un retraso antes de que se emita a través del evento handleDebouceSearchValueEmitter.
 */
+
+/* ******************************************************************************************************************* */
+/* Aquí se utiliza el subject y no el observable porque: */
+/*
+- Al usar observables se crea una nueva instancia de Observable para cada evento de búsqueda, es decir, cada vez que se presiona una tecla en el campo de búsqueda se crea un nuevo Observable con la consulta de búsqueda actual esto significa que cada tecla presionada genera una nueva instancia de Observable.
+
+- Al usar Subject, se utiliza un Subject único que maneja todos los eventos de búsqueda, es decir, cada vez que se presiona una tecla en el campo de búsqueda, se llama al método next() del Subject con la consulta de búsqueda actual. Esto emite el valor directamente a través del Subject. */
+
+/* Implementación a muy alto nivel de cómo podría ser con observables: */
+/*
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-shared-components-search-box',
+  templateUrl: './search-box.component.html',
+  styleUrls: ['./search-box.component.css'],
+})
+export class SearchBoxComponent implements OnInit, OnDestroy {
+  private debouncerSubscription?: Subscription;
+
+  @Input()
+  public placeholderProp: string = 'Search here...';
+
+  @Output()
+  public handleDebouncedSearchValueEmitter: EventEmitter<string> =
+    new EventEmitter();
+
+  ngOnInit(): void {
+    const searchQuery$: Observable<string> = new Observable<string>((observer) => {
+      observer.next('');
+    });
+
+    this.debouncerSubscription = this.setupDebouncer(searchQuery$)
+      .subscribe((value) => {
+        this.handleDebouncedSearchValueEmitter.emit(value);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.debouncerSubscription?.unsubscribe();
+  }
+
+  handleOnKeyPress(searchValue: string) {
+    if (!searchValue.trim()) return;
+    this.setupDebouncer(new Observable<string>((observer) => {
+      observer.next(searchValue.trim());
+    }));
+  }
+
+  setupDebouncer(searchQuery$: Observable<string>): Observable<string> {
+    return searchQuery$.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      map((query: string) => query)
+    );
+  }
+}
+*/
